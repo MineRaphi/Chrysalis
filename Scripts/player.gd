@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-enum MovementState { IDLE, RUN, SPRINT, JUMP, FALL, DASH }
+enum MovementState { IDLE, RUN, JUMP, FALL, DASH }
 enum ActionState { NONE, ATTACK, HURT }
 
 var movement_state: MovementState = MovementState.IDLE
@@ -71,3 +71,11 @@ func _update_animation() -> void:
 			anim_sprite.play("fall")
 		MovementState.DASH:
 			anim_sprite.play("dash")
+
+
+func _on_deathzone_body_entered(body: Node2D) -> void:
+	if body == self:
+		call_deferred("_kill_player")
+
+func _kill_player():
+	get_tree().reload_current_scene()
