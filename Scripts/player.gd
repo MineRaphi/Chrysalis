@@ -5,14 +5,19 @@ enum ActionState { NONE, ATTACK, HURT }
 
 var movement_state: MovementState = MovementState.IDLE
 var action_state: ActionState = ActionState.NONE
-var is_jumping = false
 
-const SPEED = 300.0
+var is_jumping := false
+var is_dashing := false
+var is_dash_on_cooldown := false
+
+const SPEED = 270.0
+const DASH_SPEED = 600.0
 const SPRINT_SPEED = 420.0
 const JUMP_VELOCITY = -400.0
 
 @onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var test_ability: Area2D = $"../TestAbility"
+@onready var dash_timer: Timer = $DashTimer
+@onready var dash_cooldown: Timer = $DashCooldown
 
 func _physics_process(delta: float) -> void:
 	# apply gravity
@@ -21,6 +26,25 @@ func _physics_process(delta: float) -> void:
 	
 	if velocity.y >= 0 or is_on_floor():
 		is_jumping = false
+	
+	if Input.is_action_just_pressed("dash") and PlayerAbilities.has_dash and not is_dash_on_cooldown:
+		is_dashing = true
+		is_dash_on_cooldown = true
+		dash_timer.start()
+	
+	if is_dashing:
+		velocity.y = 0
+		if anim_sprite.flip_h == true:
+			velocity.x = -DASH_SPEED
+		else:
+			velocity.x = DASH_SPEED
+		_update_movement_state()
+		_update_animation()
+		move_and_slide()
+		return
+	
+	if is_dash_on_cooldown and is_on_floor() and dash_cooldown.is_stopped():
+		dash_cooldown.start()
 	
 	# jumps
 	if Input.is_action_just_pressed("jump") and is_on_floor():
@@ -41,7 +65,9 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _update_movement_state() -> void:
-	if not is_on_floor():
+	if is_dashing:
+		movement_state = MovementState.DASH
+	elif not is_on_floor():
 		if velocity.y < 0:
 			movement_state = MovementState.JUMP
 		else:
@@ -73,6 +99,11 @@ func _update_animation() -> void:
 		MovementState.DASH:
 			anim_sprite.play("dash")
 
+func _on_dash_timer_timeout() -> void:
+	is_dashing = false
+
+func _on_dash_cooldown_timeout() -> void:
+	is_dash_on_cooldown = false
 
 func _on_deathzone_body_entered(body: Node2D) -> void:
 	if body == self:

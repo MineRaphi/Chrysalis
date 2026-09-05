@@ -113,14 +113,6 @@ region = Rect2(512, 0, 128, 80)
 atlas = ExtResource("6_qqcod")
 region = Rect2(640, 0, 128, 80)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_m376e"]
-atlas = ExtResource("7_igrcy")
-region = Rect2(0, 0, 128, 80)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6b312"]
-atlas = ExtResource("7_igrcy")
-region = Rect2(128, 0, 128, 80)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_lisdf"]
 atlas = ExtResource("7_igrcy")
 region = Rect2(256, 0, 128, 80)
@@ -446,12 +438,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_m376e")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_6b312")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_lisdf")
 }, {
 "duration": 1.0,
@@ -684,9 +670,21 @@ script = ExtResource("1_cvnsp")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=887800869]
 position = Vector2(0, -24)
 sprite_frames = SubResource("SpriteFrames_o6h5a")
-animation = &"dash"
+animation = &"idle"
 autoplay = "idle"
+frame_progress = 0.56139
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=532643010]
 position = Vector2(0, -14)
 shape = SubResource("CapsuleShape2D_q0a0x")
+
+[node name="DashTimer" type="Timer" parent="." unique_id=1389017172]
+wait_time = 0.3
+one_shot = true
+
+[node name="DashCooldown" type="Timer" parent="." unique_id=1770789365]
+wait_time = 0.3
+one_shot = true
+
+[connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
+[connection signal="timeout" from="DashCooldown" to="." method="_on_dash_cooldown_timeout"]
