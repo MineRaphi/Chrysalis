@@ -12,6 +12,7 @@ const SPRINT_SPEED = 420.0
 const JUMP_VELOCITY = -400.0
 
 @onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var test_ability: Area2D = $"../TestAbility"
 
 func _physics_process(delta: float) -> void:
 	# apply gravity
@@ -55,7 +56,7 @@ func _update_animation() -> void:
 		anim_sprite.flip_h = false
 	elif velocity.x < 0:
 		anim_sprite.flip_h = true
-		
+	
 	if action_state == ActionState.HURT:
 		print("hurt") #animation still needed
 		return
