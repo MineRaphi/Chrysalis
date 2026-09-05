@@ -20,13 +20,7 @@ const JUMP_VELOCITY = -400.0
 @onready var dash_cooldown: Timer = $DashCooldown
 
 func _physics_process(delta: float) -> void:
-	# apply gravity
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-	
-	if velocity.y >= 0 or is_on_floor():
-		is_jumping = false
-	
+	# detects dash
 	if Input.is_action_just_pressed("dash") and PlayerAbilities.has_dash and not is_dash_on_cooldown:
 		is_dashing = true
 		is_dash_on_cooldown = true
@@ -42,23 +36,30 @@ func _physics_process(delta: float) -> void:
 		_update_animation()
 		move_and_slide()
 		return
+	else:
+		# apply gravity
+		if not is_on_floor():
+			velocity += get_gravity() * delta
+		
+		if velocity.y >= 0 or is_on_floor():
+			is_jumping = false
+		
+		# jumps
+		if Input.is_action_just_pressed("jump") and is_on_floor():
+			velocity.y = JUMP_VELOCITY
+			is_jumping = true
+		
+		# jump release
+		if Input.is_action_just_released("jump") and is_jumping:
+			velocity.y = 0
+			is_jumping = false
+		
+		# moves horizontaly
+		var direction := Input.get_axis("left", "right")
+		velocity.x = direction * SPEED
 	
 	if is_dash_on_cooldown and is_on_floor() and dash_cooldown.is_stopped():
 		dash_cooldown.start()
-	
-	# jumps
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-		is_jumping = true
-	
-	# jump release
-	if Input.is_action_just_released("jump") and is_jumping:
-		velocity.y = 0
-		is_jumping = false
-	
-	# moves horizontaly
-	var direction := Input.get_axis("left", "right")
-	velocity.x = direction * SPEED
 	
 	_update_movement_state()
 	_update_animation()
