@@ -9,6 +9,7 @@ var action_state: ActionState = ActionState.NONE
 var is_jumping := false
 var is_dashing := false
 var is_dash_on_cooldown := false
+var is_double_jump_avalible := true
 
 const SPEED = 270.0
 const DASH_SPEED = 600.0
@@ -45,9 +46,14 @@ func _physics_process(delta: float) -> void:
 			is_jumping = false
 		
 		# jumps
-		if Input.is_action_just_pressed("jump") and is_on_floor():
-			velocity.y = JUMP_VELOCITY
-			is_jumping = true
+		if Input.is_action_just_pressed("jump"):
+			if is_on_floor():
+				velocity.y = JUMP_VELOCITY
+				is_jumping = true
+			elif is_double_jump_avalible and PlayerAbilities.has_double_jump:
+				velocity.y = JUMP_VELOCITY
+				is_jumping = true
+				is_double_jump_avalible = false
 		
 		# jump release
 		if Input.is_action_just_released("jump") and is_jumping:
@@ -60,6 +66,9 @@ func _physics_process(delta: float) -> void:
 	
 	if is_dash_on_cooldown and is_on_floor() and dash_cooldown.is_stopped():
 		dash_cooldown.start()
+	
+	if not is_double_jump_avalible and is_on_floor():
+		is_double_jump_avalible = true
 	
 	_update_movement_state()
 	_update_animation()
