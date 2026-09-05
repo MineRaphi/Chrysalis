@@ -492,7 +492,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_nuaet")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"dash",
 "speed": 10.0
 }, {
@@ -740,7 +740,7 @@ script = ExtResource("1_cvnsp")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=887800869]
 position = Vector2(0, -24)
 sprite_frames = SubResource("SpriteFrames_o6h5a")
-animation = &"idle"
+animation = &"attack_1"
 autoplay = "idle"
 
 [node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=532643010]
@@ -765,6 +765,16 @@ one_shot = true
 [node name="WallJumpTimer" type="Timer" parent="." unique_id=678115197]
 wait_time = 0.2
 
+[node name="AttackCooldown" type="Timer" parent="." unique_id=453716976]
+wait_time = 0.4
+one_shot = true
+
+[node name="ComboTimer" type="Timer" parent="." unique_id=1628366058]
+wait_time = 0.6
+one_shot = true
+
 [connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
 [connection signal="timeout" from="DashCooldown" to="." method="_on_dash_cooldown_timeout"]
 [connection signal="timeout" from="WallJumpTimer" to="." method="_on_wall_jump_timer_timeout"]
+[connection signal="timeout" from="AttackCooldown" to="." method="_on_attack_cooldown_timeout"]
+[connection signal="timeout" from="ComboTimer" to="." method="_on_combo_timer_timeout"]

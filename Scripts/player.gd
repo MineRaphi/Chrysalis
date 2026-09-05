@@ -12,6 +12,8 @@ var is_dash_on_cooldown := false
 var is_double_jump_avalible := true
 var is_wall_sliding := false
 var movement_disabled := false
+var is_attack_on_cooldown := false
+var combo_state := 0
 
 const SPEED = 270.0
 const DASH_SPEED = 600.0
@@ -23,6 +25,8 @@ const JUMP_VELOCITY = -400.0
 @onready var dash_timer: Timer = $DashTimer
 @onready var dash_cooldown: Timer = $DashCooldown
 @onready var wall_jump_timer: Timer = $WallJumpTimer
+@onready var attack_cooldown: Timer = $AttackCooldown
+@onready var combo_timer: Timer = $ComboTimer
 
 func _physics_process(delta: float) -> void:
 	# detects dash
@@ -87,6 +91,13 @@ func _physics_process(delta: float) -> void:
 			velocity.y = 0
 			is_jumping = false
 		
+		# attack
+		if Input.is_action_just_pressed("attack") and not is_wall_sliding and not is_attack_on_cooldown and combo_state < 3:
+			action_state = ActionState.ATTACK
+			is_attack_on_cooldown = true
+			combo_state += 1
+			attack_cooldown.start()
+			combo_timer.start()
 	
 	if is_dash_on_cooldown and (is_on_floor() or is_wall_sliding) and dash_cooldown.is_stopped():
 		dash_cooldown.start()
@@ -121,6 +132,10 @@ func _update_animation() -> void:
 	
 	if action_state == ActionState.HURT:
 		print("hurt") #animation still needed
+		return
+	
+	if action_state == ActionState.ATTACK:
+		anim_sprite.play("attack_" + str(combo_state))
 		return
 	
 	match movement_state:
@@ -158,3 +173,10 @@ func _on_deathzone_body_entered(body: Node2D) -> void:
 
 func _kill_player():
 	get_tree().reload_current_scene()
+
+func _on_attack_cooldown_timeout() -> void:
+	is_attack_on_cooldown = false
+	action_state = ActionState.NONE
+
+func _on_combo_timer_timeout() -> void:
+	combo_state = 0

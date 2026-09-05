@@ -22,7 +22,7 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACAAAAAAAAAAA
 tile_set = SubResource("TileSet_q0a0x")
 
 [node name="Player" parent="." unique_id=923916503 instance=ExtResource("2_dtjkg")]
-position = Vector2(834, -700)
+position = Vector2(56, -41)
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1624000626]
 position = Vector2(0, -23)
