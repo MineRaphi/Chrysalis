@@ -742,7 +742,6 @@ position = Vector2(0, -24)
 sprite_frames = SubResource("SpriteFrames_o6h5a")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.24780542
 
 [node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=532643010]
 position = Vector2(0, -16)
@@ -763,5 +762,9 @@ one_shot = true
 wait_time = 0.2
 one_shot = true
 
+[node name="WallJumpTimer" type="Timer" parent="." unique_id=678115197]
+wait_time = 0.2
+
 [connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
 [connection signal="timeout" from="DashCooldown" to="." method="_on_dash_cooldown_timeout"]
+[connection signal="timeout" from="WallJumpTimer" to="." method="_on_wall_jump_timer_timeout"]

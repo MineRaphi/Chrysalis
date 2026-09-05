@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-enum MovementState { IDLE, RUN, JUMP, FALL, DASH }
+enum MovementState { IDLE, RUN, JUMP, FALL, DASH, WALL }
 enum ActionState { NONE, ATTACK, HURT }
 
 var movement_state: MovementState = MovementState.IDLE
@@ -10,15 +10,19 @@ var is_jumping := false
 var is_dashing := false
 var is_dash_on_cooldown := false
 var is_double_jump_avalible := true
+var is_wall_sliding := false
+var movement_disabled := false
 
 const SPEED = 270.0
 const DASH_SPEED = 600.0
 const SPRINT_SPEED = 420.0
+const WALL_SLIDE_SPEED = 200.0
 const JUMP_VELOCITY = -400.0
 
 @onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var dash_timer: Timer = $DashTimer
 @onready var dash_cooldown: Timer = $DashCooldown
+@onready var wall_jump_timer: Timer = $WallJumpTimer
 
 func _physics_process(delta: float) -> void:
 	# detects dash
@@ -42,6 +46,19 @@ func _physics_process(delta: float) -> void:
 		if not is_on_floor():
 			velocity += get_gravity() * delta
 		
+		# moves horizontaly
+		if not movement_disabled:
+			var direction := Input.get_axis("left", "right")
+			velocity.x = direction * SPEED
+		
+		# wall slide: clamp fall speed while pressed against a wall in the air
+		is_wall_sliding = is_on_wall_only() and not is_on_floor() and velocity.y > 0 and PlayerAbilities.has_wall_jump
+		if is_wall_sliding:
+			# -1 = wall on right, 1 = wall on left
+			var wall_side = sign(get_wall_normal().x)
+			velocity.y = min(velocity.y, WALL_SLIDE_SPEED)
+			velocity.x += -wall_side
+		
 		if velocity.y >= 0 or is_on_floor():
 			is_jumping = false
 		
@@ -50,24 +67,31 @@ func _physics_process(delta: float) -> void:
 			if is_on_floor():
 				velocity.y = JUMP_VELOCITY
 				is_jumping = true
+			elif is_wall_sliding:
+				# -1 = wall on right, 1 = wall on left
+				var wall_side = sign(get_wall_normal().x)
+				velocity.y = JUMP_VELOCITY
+				velocity.x = wall_side * SPEED
+				is_jumping = true
+				
+				movement_disabled = true
+				wall_jump_timer.start()
 			elif is_double_jump_avalible and PlayerAbilities.has_double_jump:
 				velocity.y = JUMP_VELOCITY
 				is_jumping = true
 				is_double_jump_avalible = false
+				
 		
 		# jump release
 		if Input.is_action_just_released("jump") and is_jumping:
 			velocity.y = 0
 			is_jumping = false
 		
-		# moves horizontaly
-		var direction := Input.get_axis("left", "right")
-		velocity.x = direction * SPEED
 	
-	if is_dash_on_cooldown and is_on_floor() and dash_cooldown.is_stopped():
+	if is_dash_on_cooldown and (is_on_floor() or is_wall_sliding) and dash_cooldown.is_stopped():
 		dash_cooldown.start()
 	
-	if not is_double_jump_avalible and is_on_floor():
+	if not is_double_jump_avalible and (is_on_floor() or is_wall_sliding):
 		is_double_jump_avalible = true
 	
 	_update_movement_state()
@@ -77,6 +101,8 @@ func _physics_process(delta: float) -> void:
 func _update_movement_state() -> void:
 	if is_dashing:
 		movement_state = MovementState.DASH
+	elif is_wall_sliding:
+		movement_state = MovementState.WALL
 	elif not is_on_floor():
 		if velocity.y < 0:
 			movement_state = MovementState.JUMP
@@ -108,12 +134,23 @@ func _update_animation() -> void:
 			anim_sprite.play("fall")
 		MovementState.DASH:
 			anim_sprite.play("dash")
+		MovementState.WALL:
+			anim_sprite.play("wall_slide")
+			# -1 = wall on right, 1 = wall on left
+			var wall_side = sign(get_wall_normal().x)
+			if wall_side < 0:
+				anim_sprite.flip_h = true
+			else:
+				anim_sprite.flip_h = false
 
 func _on_dash_timer_timeout() -> void:
 	is_dashing = false
 
 func _on_dash_cooldown_timeout() -> void:
 	is_dash_on_cooldown = false
+
+func _on_wall_jump_timer_timeout() -> void:
+	movement_disabled = false
 
 func _on_deathzone_body_entered(body: Node2D) -> void:
 	if body == self:
