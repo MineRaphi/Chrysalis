@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cgm6yf18iggv0" path="res://Assets/placehold-block.png" id="1_cu7ek"]
 [ext_resource type="PackedScene" uid="uid://7sn8lkbahrpl" path="res://Scenes/player.tscn" id="2_qpu34"]
-[ext_resource type="Script" uid="uid://col50vevqmhq" path="res://Scenes/load_right.gd" id="3_kn8tv"]
+[ext_resource type="Script" uid="uid://col50vevqmhq" path="res://Scripts/load_right.gd" id="3_kn8tv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qpu34"]
 texture = ExtResource("1_cu7ek")
