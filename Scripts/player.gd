@@ -14,6 +14,8 @@ var is_wall_sliding := false
 var movement_disabled := false
 var is_attack_on_cooldown := false
 var combo_state := 0
+var look_direction := 1
+var camera_distance := Vector2(0, 0)
 
 const SPEED = 270.0
 const DASH_SPEED = 600.0
@@ -21,7 +23,16 @@ const SPRINT_SPEED = 420.0
 const WALL_SLIDE_SPEED = 200.0
 const JUMP_VELOCITY = -400.0
 
+const CAMERA_MIN_DIS_X = 16
+const CAMERA_MAX_DIS_X = 64
+
+const CAMERA_MIN_DIS_Y = -24
+const CAMERA_MAX_DIS_Y = 24
+const CAMERA_OFFSET_Y = -16
+
 @onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var camera_target: Marker2D = $CameraTarget
+@onready var camera: Camera2D = $CameraTarget/Camera2D
 @onready var dash_timer: Timer = $DashTimer
 @onready var dash_cooldown: Timer = $DashCooldown
 @onready var wall_jump_timer: Timer = $WallJumpTimer
@@ -37,10 +48,10 @@ func _physics_process(delta: float) -> void:
 	
 	if is_dashing:
 		velocity.y = 0
-		if anim_sprite.flip_h == true:
-			velocity.x = -DASH_SPEED
-		else:
+		if look_direction > 0:
 			velocity.x = DASH_SPEED
+		else:
+			velocity.x = -DASH_SPEED
 		_update_movement_state()
 		_update_animation()
 		move_and_slide()
@@ -105,9 +116,17 @@ func _physics_process(delta: float) -> void:
 	if not is_double_jump_avalible and (is_on_floor() or is_wall_sliding):
 		is_double_jump_avalible = true
 	
+	_update_data()
+	_update_camera()
 	_update_movement_state()
 	_update_animation()
 	move_and_slide()
+
+func _update_data() -> void:
+	if velocity.x > 0:
+		look_direction = 1
+	elif velocity.x < 0:
+		look_direction = -1
 
 func _update_movement_state() -> void:
 	if is_dashing:
@@ -125,9 +144,9 @@ func _update_movement_state() -> void:
 		movement_state = MovementState.IDLE
 
 func _update_animation() -> void:
-	if velocity.x > 0:
+	if look_direction > 0:
 		anim_sprite.flip_h = false
-	elif velocity.x < 0:
+	elif look_direction < 0:
 		anim_sprite.flip_h = true
 	
 	if action_state == ActionState.HURT:
@@ -157,6 +176,22 @@ func _update_animation() -> void:
 				anim_sprite.flip_h = true
 			else:
 				anim_sprite.flip_h = false
+
+func _update_camera() -> void:
+	camera_distance.x = abs(velocity.x / 3)
+	camera_distance.y = velocity.y / 5
+	
+	camera_distance.x = look_direction * clamp(camera_distance.x, CAMERA_MIN_DIS_X, CAMERA_MAX_DIS_X)
+	camera_distance.y = clamp(camera_distance.y, CAMERA_MIN_DIS_Y, CAMERA_MAX_DIS_Y)
+	camera_distance.y += CAMERA_OFFSET_Y
+	
+	camera_target.position.x = camera_distance.x
+	camera_target.position.y = camera_distance.y
+	
+	if abs(camera_target.position.x - camera.position.x) > 50:
+		camera.position_smoothing_speed = 5.0
+	else:
+		camera.position_smoothing_speed = 1.0
 
 func _on_dash_timer_timeout() -> void:
 	is_dashing = false

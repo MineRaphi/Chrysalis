@@ -737,9 +737,13 @@ size = Vector2(10, 23)
 [node name="Player" type="CharacterBody2D" unique_id=923916503]
 script = ExtResource("1_cvnsp")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1547503541]
-position = Vector2(0, -23)
+[node name="CameraTarget" type="Marker2D" parent="." unique_id=1764255834]
+position = Vector2(16, -16)
+
+[node name="Camera2D" type="Camera2D" parent="CameraTarget" unique_id=1547503541]
 zoom = Vector2(2, 2)
+process_callback = 0
+position_smoothing_enabled = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=887800869]
 position = Vector2(0, -24)
