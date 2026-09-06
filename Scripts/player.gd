@@ -26,8 +26,8 @@ const JUMP_VELOCITY = -400.0
 const CAMERA_MIN_DIS_X = 16
 const CAMERA_MAX_DIS_X = 64
 
-const CAMERA_MIN_DIS_Y = -24
-const CAMERA_MAX_DIS_Y = 24
+const CAMERA_MIN_DIS_Y = -48
+const CAMERA_MAX_DIS_Y = 48
 const CAMERA_OFFSET_Y = -16
 
 @onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -38,6 +38,7 @@ const CAMERA_OFFSET_Y = -16
 @onready var wall_jump_timer: Timer = $WallJumpTimer
 @onready var attack_cooldown: Timer = $AttackCooldown
 @onready var combo_timer: Timer = $ComboTimer
+
 
 func _physics_process(delta: float) -> void:
 	# detects dash
@@ -123,11 +124,15 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _update_data() -> void:
-	if velocity.x > 0:
-		look_direction = 1
-	elif velocity.x < 0:
-		look_direction = -1
-
+	if is_wall_sliding:
+		# -1 = wall on right, 1 = wall on left
+		look_direction = sign(get_wall_normal().x)
+	else:
+		if velocity.x > 0:
+			look_direction = 1
+		elif velocity.x < 0:
+			look_direction = -1
+		
 func _update_movement_state() -> void:
 	if is_dashing:
 		movement_state = MovementState.DASH
@@ -170,28 +175,22 @@ func _update_animation() -> void:
 			anim_sprite.play("dash")
 		MovementState.WALL:
 			anim_sprite.play("wall_slide")
-			# -1 = wall on right, 1 = wall on left
-			var wall_side = sign(get_wall_normal().x)
-			if wall_side < 0:
-				anim_sprite.flip_h = true
-			else:
-				anim_sprite.flip_h = false
 
 func _update_camera() -> void:
 	camera_distance.x = abs(velocity.x / 3)
-	camera_distance.y = velocity.y / 5
+	camera_distance.y = velocity.y / 2
 	
-	camera_distance.x = look_direction * clamp(camera_distance.x, CAMERA_MIN_DIS_X, CAMERA_MAX_DIS_X)
+	if not is_wall_sliding:
+		camera_distance.x = look_direction * clamp(camera_distance.x, CAMERA_MIN_DIS_X, CAMERA_MAX_DIS_X)
+	else:
+		camera_distance.x = 0
 	camera_distance.y = clamp(camera_distance.y, CAMERA_MIN_DIS_Y, CAMERA_MAX_DIS_Y)
 	camera_distance.y += CAMERA_OFFSET_Y
 	
-	camera_target.position.x = camera_distance.x
-	camera_target.position.y = camera_distance.y
+	camera_target.position.x = lerp(camera_target.position.x, camera_distance.x, 0.1)
+	camera_target.position.y = lerp(camera_target.position.y, camera_distance.y, 0.1)
 	
-	if abs(camera_target.position.x - camera.position.x) > 50:
-		camera.position_smoothing_speed = 5.0
-	else:
-		camera.position_smoothing_speed = 1.0
+	camera.position_smoothing_speed = max(velocity.length()/50, 2)
 
 func _on_dash_timer_timeout() -> void:
 	is_dashing = false
