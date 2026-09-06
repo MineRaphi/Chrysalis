@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cgm6yf18iggv0" path="res://Assets/placehold-block.png" id="1_7j2ip"]
 [ext_resource type="PackedScene" uid="uid://dajiel50457g" path="res://Scenes/level_loader.tscn" id="3_o47u0"]
 [ext_resource type="PackedScene" uid="uid://dvtuakcbc154b" path="res://Levels/TestLevels/test_level_2.tscn" id="4_7j2ip"]
-[ext_resource type="Script" uid="uid://ci384g5gffl7b" path="res://Scripts/ability_pickup.gd" id="4_abx52"]
+[ext_resource type="Script" uid="uid://ci384g5gffl7b" path="res://Scripts/test_ability_pickup.gd" id="4_abx52"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_eglq2"]
 texture = ExtResource("1_7j2ip")
@@ -30,11 +30,11 @@ tile_set = SubResource("TileSet_q0a0x")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="deathzone" unique_id=627796691]
 shape = SubResource("WorldBoundaryShape2D_dtjkg")
 
-[node name="abilityPickup" type="Area2D" parent="." unique_id=376457671]
+[node name="testAbilityPickup" type="Area2D" parent="." unique_id=376457671]
 position = Vector2(423, -32)
 script = ExtResource("4_abx52")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="abilityPickup" unique_id=649942180]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="testAbilityPickup" unique_id=649942180]
 shape = SubResource("CircleShape2D_o6h5a")
 
 [node name="LevelLoader" parent="." unique_id=693390060 instance=ExtResource("3_o47u0")]
@@ -43,4 +43,4 @@ scale = Vector2(0.9384015, 2.8046637)
 level = ExtResource("4_7j2ip")
 spawn_name = "right"
 
-[connection signal="body_entered" from="abilityPickup" to="abilityPickup" method="_on_body_entered"]
+[connection signal="body_entered" from="testAbilityPickup" to="testAbilityPickup" method="_on_body_entered"]
