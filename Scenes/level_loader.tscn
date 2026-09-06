@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dajiel50457g"]
+
+[ext_resource type="Script" uid="uid://cbu3k4oopeovp" path="res://Scripts/level_loader.gd" id="1_15w05"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o6h5a"]
+
+[node name="LevelLoader" type="Node2D" unique_id=693390060]
+script = ExtResource("1_15w05")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1397547883]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=50413101]
+shape = SubResource("RectangleShape2D_o6h5a")
