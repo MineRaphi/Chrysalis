@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://dvtuakcbc154b"]
 
 [ext_resource type="Texture2D" uid="uid://cgm6yf18iggv0" path="res://Assets/placehold-block.png" id="1_g6sjg"]
+[ext_resource type="PackedScene" uid="uid://dajiel50457g" path="res://Scenes/level_loader.tscn" id="2_whm3c"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qpu34"]
 texture = ExtResource("1_g6sjg")
@@ -24,3 +25,16 @@ tile_set = SubResource("TileSet_kn8tv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="deathzone" unique_id=1356726668]
 shape = SubResource("WorldBoundaryShape2D_cu7ek")
+
+[node name="LevelLoader" parent="." unique_id=693390060 instance=ExtResource("2_whm3c")]
+position = Vector2(38, -24)
+scale = Vector2(0.9384015, 2.8046637)
+level_path = "res://Levels/TestLevels/test_level.tscn"
+spawn_name = "left"
+
+[node name="spawnMaker" type="Node2D" parent="." unique_id=1460842635]
+
+[node name="default" type="Marker2D" parent="spawnMaker" unique_id=1023017682]
+position = Vector2(-164, -51)
+
+[node name="right" type="Marker2D" parent="spawnMaker" unique_id=1233714879]

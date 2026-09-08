@@ -2,7 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://cgm6yf18iggv0" path="res://Assets/placehold-block.png" id="1_7j2ip"]
 [ext_resource type="PackedScene" uid="uid://dajiel50457g" path="res://Scenes/level_loader.tscn" id="3_o47u0"]
-[ext_resource type="PackedScene" uid="uid://dvtuakcbc154b" path="res://Levels/TestLevels/test_level_2.tscn" id="4_7j2ip"]
 [ext_resource type="Script" uid="uid://ci384g5gffl7b" path="res://Scripts/test_ability_pickup.gd" id="4_abx52"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_eglq2"]
@@ -40,7 +39,15 @@ shape = SubResource("CircleShape2D_o6h5a")
 [node name="LevelLoader" parent="." unique_id=693390060 instance=ExtResource("3_o47u0")]
 position = Vector2(-9, -24)
 scale = Vector2(0.9384015, 2.8046637)
-level = ExtResource("4_7j2ip")
+level_path = "res://Levels/TestLevels/test_level_2.tscn"
 spawn_name = "right"
+
+[node name="spawnMaker" type="Node2D" parent="." unique_id=225100959]
+
+[node name="default" type="Marker2D" parent="spawnMaker" unique_id=486191604]
+position = Vector2(144, 0)
+
+[node name="left" type="Marker2D" parent="spawnMaker" unique_id=455003113]
+position = Vector2(32, 0)
 
 [connection signal="body_entered" from="testAbilityPickup" to="testAbilityPickup" method="_on_body_entered"]

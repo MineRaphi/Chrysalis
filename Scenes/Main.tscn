@@ -8,4 +8,4 @@ script = ExtResource("1_idj7w")
 
 [node name="Player" parent="." unique_id=923916503 instance=ExtResource("1_r150o")]
 
-[node name="Node2D" type="Node2D" parent="." unique_id=801395696]
+[node name="currentRoom" type="Node2D" parent="." unique_id=801395696]
