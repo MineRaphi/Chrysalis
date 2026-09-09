@@ -132,7 +132,7 @@ func _update_data() -> void:
 			look_direction = 1
 		elif velocity.x < 0:
 			look_direction = -1
-		
+
 func _update_movement_state() -> void:
 	if is_dashing:
 		movement_state = MovementState.DASH
@@ -214,3 +214,6 @@ func _on_attack_cooldown_timeout() -> void:
 
 func _on_combo_timer_timeout() -> void:
 	combo_state = 0
+
+func snap_camera_to_target():
+	camera.reset_smoothing()
