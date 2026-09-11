@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://cuux7gynxvhly"]
 
 [ext_resource type="Texture2D" uid="uid://cgm6yf18iggv0" path="res://Assets/placehold-block.png" id="1_7j2ip"]
+[ext_resource type="Texture2D" uid="uid://ck76h2a511ev" path="res://Assets/placehold-item.png" id="3_7j2ip"]
 [ext_resource type="PackedScene" uid="uid://dajiel50457g" path="res://Scenes/level_loader.tscn" id="3_o47u0"]
 [ext_resource type="Script" uid="uid://ci384g5gffl7b" path="res://Scripts/test_ability_pickup.gd" id="4_abx52"]
 
@@ -35,6 +36,9 @@ script = ExtResource("4_abx52")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="testAbilityPickup" unique_id=649942180]
 shape = SubResource("CircleShape2D_o6h5a")
+
+[node name="Sprite2D" type="Sprite2D" parent="testAbilityPickup" unique_id=1851814000]
+texture = ExtResource("3_7j2ip")
 
 [node name="LevelLoader" parent="." unique_id=693390060 instance=ExtResource("3_o47u0")]
 position = Vector2(-9, -24)
