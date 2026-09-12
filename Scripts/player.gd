@@ -18,6 +18,8 @@ var look_direction := 1
 var look_updown := 0
 var camera_distance := Vector2(0, 0)
 
+var already_hit_this_attack: Array = []
+
 const SPEED = 240.0
 const DASH_SPEED = 600.0
 const SPRINT_SPEED = 420.0
@@ -42,6 +44,7 @@ const CAMERA_OFFSET_Y = -16
 @onready var attack_cooldown: Timer = $Timer/AttackCooldown
 @onready var slash: AnimatedSprite2D = $Slash
 @onready var attack_box: Area2D = $AttackBox
+@onready var hurtbox: Area2D = $Hurtbox
 
 
 func _physics_process(delta: float) -> void:
@@ -150,11 +153,9 @@ func _handle_cooldown_resets() -> void:
 
 func _handle_attack_hit() -> void:
 	for area in attack_box.get_overlapping_areas():
-		if area.name == "hitTest":
-			area.queue_free()
-			
-			if look_updown < 0 and not is_on_floor():
-				velocity.y = POGO_VELOCITY
+		if area.name == "Hurtbox" and not already_hit_this_attack.has(area):
+			already_hit_this_attack.append(area)
+			area.get_parent().take_damage(1)
 
 func _update_data() -> void:
 	if is_wall_sliding:
@@ -261,6 +262,8 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 func _slash() -> void:
 	slash.visible = true
 	action_state = ActionState.ATTACK
+	already_hit_this_attack.clear()
+	already_hit_this_attack.append(hurtbox)
 	
 	if look_updown < 0 and not is_on_floor():
 		slash.rotation_degrees = 90

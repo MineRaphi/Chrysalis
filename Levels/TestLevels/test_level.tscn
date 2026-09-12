@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://ck76h2a511ev" path="res://Assets/devTextures/placehold-item.png" id="3_7j2ip"]
 [ext_resource type="PackedScene" uid="uid://dajiel50457g" path="res://Scenes/level_loader.tscn" id="3_o47u0"]
 [ext_resource type="Script" uid="uid://ci384g5gffl7b" path="res://Scripts/test_ability_pickup.gd" id="4_abx52"]
+[ext_resource type="PackedScene" uid="uid://t662o6p6b1lp" path="res://Scenes/evil_wizard.tscn" id="5_oo6jd"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_eglq2"]
 texture = ExtResource("1_7j2ip")
@@ -11,7 +12,8 @@ texture = ExtResource("1_7j2ip")
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSet" id="TileSet_q0a0x"]
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 255
+physics_layer_0/collision_mask = 255
 sources/0 = SubResource("TileSetAtlasSource_eglq2")
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_dtjkg"]
@@ -77,5 +79,8 @@ position = Vector2(144, 0)
 
 [node name="left" type="Marker2D" parent="spawnMaker" unique_id=455003113]
 position = Vector2(32, 0)
+
+[node name="EvilWizard" parent="." unique_id=2031468200 instance=ExtResource("5_oo6jd")]
+position = Vector2(784, 74)
 
 [connection signal="body_entered" from="testAbilityPickup" to="testAbilityPickup" method="_on_body_entered"]

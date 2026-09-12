@@ -1,0 +1,97 @@
+[gd_scene format=3 uid="uid://t662o6p6b1lp"]
+
+[ext_resource type="Texture2D" uid="uid://dvg8dhdtsjgl5" path="res://Assets/Evil Wizard/Idle.png" id="1_1vlj1"]
+[ext_resource type="Script" uid="uid://xngoopqp4bd1" path="res://Scripts/evil_wizard.gd" id="1_if2hl"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_if2hl"]
+atlas = ExtResource("1_1vlj1")
+region = Rect2(0, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g2y0y"]
+atlas = ExtResource("1_1vlj1")
+region = Rect2(150, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cvuag"]
+atlas = ExtResource("1_1vlj1")
+region = Rect2(300, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cerud"]
+atlas = ExtResource("1_1vlj1")
+region = Rect2(450, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eiygc"]
+atlas = ExtResource("1_1vlj1")
+region = Rect2(600, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7iirv"]
+atlas = ExtResource("1_1vlj1")
+region = Rect2(750, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k6qbt"]
+atlas = ExtResource("1_1vlj1")
+region = Rect2(900, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yt36m"]
+atlas = ExtResource("1_1vlj1")
+region = Rect2(1050, 0, 150, 150)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o6h5a"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_if2hl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g2y0y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cvuag")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cerud")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eiygc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7iirv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k6qbt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yt36m")
+}],
+"loop": 1,
+"name": &"idel",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o6h5a"]
+height = 44.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o6h5a"]
+size = Vector2(12, 37)
+
+[node name="EvilWizard" type="CharacterBody2D" unique_id=2031468200]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_if2hl")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=362716997]
+position = Vector2(0, -25)
+sprite_frames = SubResource("SpriteFrames_o6h5a")
+animation = &"idel"
+autoplay = "idel"
+frame_progress = 0.76067865
+
+[node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=1389405512]
+position = Vector2(0, -22)
+shape = SubResource("CapsuleShape2D_o6h5a")
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1014306729]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=743977308]
+position = Vector2(0, -21.5)
+shape = SubResource("RectangleShape2D_o6h5a")
+debug_color = Color(0.9607843, 0, 0, 0.25882354)
