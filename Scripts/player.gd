@@ -23,6 +23,7 @@ const DASH_SPEED = 600.0
 const SPRINT_SPEED = 420.0
 const WALL_SLIDE_SPEED = 200.0
 const JUMP_VELOCITY = -400.0
+const POGO_VELOCITY = -275.0
 
 const CAMERA_MIN_DIS_X = 16
 const CAMERA_MAX_DIS_X = 64
@@ -151,6 +152,9 @@ func _handle_attack_hit() -> void:
 	for area in attack_box.get_overlapping_areas():
 		if area.name == "hitTest":
 			area.queue_free()
+			
+			if look_updown < 0 and not is_on_floor():
+				velocity.y = POGO_VELOCITY
 
 func _update_data() -> void:
 	if is_wall_sliding:
@@ -258,7 +262,17 @@ func _slash() -> void:
 	slash.visible = true
 	action_state = ActionState.ATTACK
 	
-	if look_updown == 0:
+	if look_updown < 0 and not is_on_floor():
+		slash.rotation_degrees = 90
+		slash.flip_h = false
+		attack_box.rotation_degrees = 90
+		slash.position = Vector2(7, -8)
+	elif look_updown > 0:
+		slash.rotation_degrees = 90
+		slash.flip_h = true
+		attack_box.rotation_degrees = -90
+		slash.position = Vector2(6, -32)
+	else:
 		if look_direction > 0:
 			slash.flip_h = false
 			attack_box.rotation_degrees = 0
@@ -268,16 +282,7 @@ func _slash() -> void:
 		
 		slash.rotation_degrees = 0
 		slash.position = Vector2(look_direction * 14, -26)
-	elif look_updown > 0:
-		slash.rotation_degrees = 90
-		slash.flip_h = true
-		attack_box.rotation_degrees = -90
-		slash.position = Vector2(6, -32)
-	else:
-		slash.rotation_degrees = 90
-		slash.flip_h = false
-		attack_box.rotation_degrees = 90
-		slash.position = Vector2(7, -8)
+
 	
 	slash.play("slash")
 	
