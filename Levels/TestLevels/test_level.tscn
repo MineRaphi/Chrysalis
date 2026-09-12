@@ -19,6 +19,9 @@ distance = -233.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_o6h5a"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_o6h5a"]
+font_size = 9
+
 [node name="TestLevel" type="Node2D" unique_id=615977672]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=40980324]
@@ -40,13 +43,21 @@ shape = SubResource("CircleShape2D_o6h5a")
 [node name="Sprite2D" type="Sprite2D" parent="testAbilityPickup" unique_id=1851814000]
 texture = ExtResource("3_7j2ip")
 
+[node name="Label" type="Label" parent="testAbilityPickup" unique_id=1012256627]
+offset_left = -25.0
+offset_top = -28.0
+offset_right = 24.0
+offset_bottom = -15.0
+text = "All Abilities"
+label_settings = SubResource("LabelSettings_o6h5a")
+
 [node name="LevelLoader" parent="." unique_id=693390060 instance=ExtResource("3_o47u0")]
 position = Vector2(-9, -24)
 scale = Vector2(0.9384015, 2.8046637)
 level_path = "res://Levels/TestLevels/test_level_2.tscn"
 spawn_name = "right"
 
-[node name="spawnMaker" type="Node2D" parent="." unique_id=225100959]
+[node name="spawnMaker" type="Node" parent="." unique_id=497518305]
 
 [node name="default" type="Marker2D" parent="spawnMaker" unique_id=486191604]
 position = Vector2(144, 0)
