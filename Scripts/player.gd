@@ -18,8 +18,6 @@ var look_direction := 1
 var look_updown := 0
 var camera_distance := Vector2(0, 0)
 
-var is_attacking := false
-
 const SPEED = 240.0
 const DASH_SPEED = 600.0
 const SPRINT_SPEED = 420.0
@@ -110,7 +108,7 @@ func _physics_process(delta: float) -> void:
 		
 		# attack
 		if Input.is_action_just_pressed("attack") and not is_wall_sliding and not is_attack_on_cooldown and combo_state < 3:
-			#action_state = ActionState.ATTACK
+			action_state = ActionState.ATTACK
 			#is_attack_on_cooldown = true
 			#combo_state += 1
 			#attack_cooldown.start()
@@ -123,7 +121,7 @@ func _physics_process(delta: float) -> void:
 	if not is_double_jump_avalible and (is_on_floor() or is_wall_sliding):
 		is_double_jump_avalible = true
 	
-	if is_attacking:
+	if action_state == ActionState.ATTACK:
 		for area in attack_box.get_overlapping_areas():
 			if area.name == "hitTest":
 				area.queue_free()
@@ -176,9 +174,9 @@ func _update_animation() -> void:
 		print("hurt") #animation still needed
 		return
 	
-	if action_state == ActionState.ATTACK:
-		anim_sprite.play("attack_" + str(combo_state))
-		return
+	#if action_state == ActionState.ATTACK:
+	#	anim_sprite.play("attack_" + str(combo_state))
+	#	return
 	
 	match movement_state:
 		MovementState.IDLE:
@@ -238,7 +236,7 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 
 func _slash() -> void:
 	slash.visible = true
-	is_attacking = true
+	action_state = ActionState.ATTACK
 	
 	if look_updown == 0:
 		if look_direction > 0:
@@ -265,4 +263,4 @@ func _slash() -> void:
 	
 	await slash.animation_finished
 	slash.visible = false
-	is_attacking = false
+	action_state = ActionState.NONE
