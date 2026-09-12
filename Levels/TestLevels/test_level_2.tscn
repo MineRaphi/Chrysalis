@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://dvtuakcbc154b"]
 
-[ext_resource type="Texture2D" uid="uid://cgm6yf18iggv0" path="res://Assets/placehold-block.png" id="1_g6sjg"]
+[ext_resource type="Texture2D" uid="uid://cgm6yf18iggv0" path="res://Assets/devTextures/placehold-block.png" id="1_g6sjg"]
 [ext_resource type="PackedScene" uid="uid://dajiel50457g" path="res://Scenes/level_loader.tscn" id="2_whm3c"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qpu34"]

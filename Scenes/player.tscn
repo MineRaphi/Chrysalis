@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bgnjp1yw3vv1e" path="res://Scripts/player.gd" id="1_m0x7a"]
 [ext_resource type="Texture2D" uid="uid://vpv8f0sxgiwq" path="res://Assets/Character/idle/idle.png" id="1_rpqav"]
-[ext_resource type="Texture2D" uid="uid://ck76h2a511ev" path="res://Assets/placehold-item.png" id="2_1iu4k"]
+[ext_resource type="Texture2D" uid="uid://ck76h2a511ev" path="res://Assets/devTextures/placehold-item.png" id="2_1iu4k"]
 [ext_resource type="Texture2D" uid="uid://bjj7tk4nyjivp" path="res://Assets/Character/attacks/punch_1.png" id="4_i2e8t"]
 [ext_resource type="Texture2D" uid="uid://b1oyqkasw31ox" path="res://Assets/Character/attacks/punch_2.png" id="5_qidb7"]
 [ext_resource type="Texture2D" uid="uid://dxcjk7obbn2vw" path="res://Assets/Character/attacks/punch_3.png" id="6_70hv0"]
@@ -18,7 +18,11 @@
 [ext_resource type="Texture2D" uid="uid://bndjw3xljrpml" path="res://Assets/Character/running/running.png" id="17_bfbt0"]
 [ext_resource type="Texture2D" uid="uid://c5prhqqymfwan" path="res://Assets/Character/sprint/sprint.png" id="18_wosd6"]
 [ext_resource type="Texture2D" uid="uid://b4wq5hkafvjka" path="res://Assets/Character/wall_slide/slide_loop.png" id="19_hkrn1"]
+[ext_resource type="Texture2D" uid="uid://uihg3mstxv73" path="res://Assets/devTextures/slash/Slash_color1_frame1.png" id="20_i2e8t"]
 [ext_resource type="Texture2D" uid="uid://dmu5af38ckt15" path="res://Assets/Character/wall_slide/wall_slide.png" id="20_wpo1r"]
+[ext_resource type="Texture2D" uid="uid://c6r5qxr163ar7" path="res://Assets/devTextures/slash/Slash_color1_frame2.png" id="21_qidb7"]
+[ext_resource type="Texture2D" uid="uid://cp2x41ad6ycpt" path="res://Assets/devTextures/slash/Slash_color1_frame3.png" id="22_70hv0"]
+[ext_resource type="Texture2D" uid="uid://vpl7ohb01vk3" path="res://Assets/devTextures/slash/Slash_color1_frame4.png" id="23_8flut"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gymyn"]
 atlas = ExtResource("4_i2e8t")
@@ -729,6 +733,26 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_q0a0x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("20_i2e8t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_qidb7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_70hv0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_8flut")
+}],
+"loop": 0,
+"name": &"slash",
+"speed": 24.0
+}]
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q0a0x"]
 height = 32.0
 
@@ -756,7 +780,16 @@ position = Vector2(0, -24)
 sprite_frames = SubResource("SpriteFrames_o6h5a")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.60406965
+frame_progress = 0.55713075
+
+[node name="Slash" type="AnimatedSprite2D" parent="." unique_id=600292899]
+visible = false
+modulate = Color(1, 1, 1, 0.8)
+position = Vector2(14, -26)
+scale = Vector2(1.0625, 1.0625)
+sprite_frames = SubResource("SpriteFrames_q0a0x")
+animation = &"slash"
+frame = 2
 
 [node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=532643010]
 position = Vector2(0, -16)
@@ -789,6 +822,14 @@ one_shot = true
 [node name="AttackCooldown" type="Timer" parent="Timer" unique_id=453716976]
 wait_time = 0.4
 one_shot = true
+
+[node name="AttackBox" type="Area2D" parent="." unique_id=906058733]
+position = Vector2(0, -20)
+monitorable = false
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="AttackBox" unique_id=1837637328]
+position = Vector2(0, 20)
+polygon = PackedVector2Array(1, 0, 21, -7, 36, -17, 34, -26, 19, -34, -2, -37, 5, -20)
 
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
 [connection signal="timeout" from="Timer/DashTimer" to="." method="_on_dash_timer_timeout"]

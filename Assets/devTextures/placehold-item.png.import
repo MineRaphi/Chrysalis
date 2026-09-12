@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ck76h2a511ev"
-path="res://.godot/imported/placehold-item.png-66c7b194d572591b1f1fff62eeadb2e0.ctex"
+path="res://.godot/imported/placehold-item.png-c3be7c87864b9d73708ea15948c5f779.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/placehold-item.png"
-dest_files=["res://.godot/imported/placehold-item.png-66c7b194d572591b1f1fff62eeadb2e0.ctex"]
+source_file="res://Assets/devTextures/placehold-item.png"
+dest_files=["res://.godot/imported/placehold-item.png-c3be7c87864b9d73708ea15948c5f779.ctex"]
 
 [params]
 
