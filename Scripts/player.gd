@@ -17,7 +17,7 @@ var combo_state := 0
 var look_direction := 1
 var camera_distance := Vector2(0, 0)
 
-const SPEED = 270.0
+const SPEED = 240.0
 const DASH_SPEED = 600.0
 const SPRINT_SPEED = 420.0
 const WALL_SLIDE_SPEED = 200.0
@@ -33,11 +33,11 @@ const CAMERA_OFFSET_Y = -16
 @onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var camera_target: Marker2D = $CameraTarget
 @onready var camera: Camera2D = $CameraTarget/Camera2D
-@onready var dash_timer: Timer = $DashTimer
-@onready var dash_cooldown: Timer = $DashCooldown
-@onready var wall_jump_timer: Timer = $WallJumpTimer
-@onready var attack_cooldown: Timer = $AttackCooldown
-@onready var combo_timer: Timer = $ComboTimer
+@onready var dash_timer: Timer = $Timer/DashTimer
+@onready var dash_cooldown: Timer = $Timer/DashCooldown
+@onready var wall_jump_timer: Timer = $Timer/WallJumpTimer
+@onready var combo_timer: Timer = $Timer/ComboTimer
+@onready var attack_cooldown: Timer = $Timer/AttackCooldown
 
 
 func _physics_process(delta: float) -> void:
@@ -201,10 +201,6 @@ func _on_dash_cooldown_timeout() -> void:
 func _on_wall_jump_timer_timeout() -> void:
 	movement_disabled = false
 
-func _on_deathzone_body_entered(body: Node2D) -> void:
-	if body == self:
-		call_deferred("_kill_player")
-
 func _kill_player():
 	get_tree().reload_current_scene()
 
@@ -217,3 +213,7 @@ func _on_combo_timer_timeout() -> void:
 
 func snap_camera_to_target():
 	camera.reset_smoothing()
+
+func _on_hurtbox_area_entered(area: Area2D) -> void:
+	if area.name == "deathzone":
+		call_deferred("_kill_player")

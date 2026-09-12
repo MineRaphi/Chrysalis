@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bgnjp1yw3vv1e" path="res://Scripts/player.gd" id="1_m0x7a"]
 [ext_resource type="Texture2D" uid="uid://vpv8f0sxgiwq" path="res://Assets/Character/idle/idle.png" id="1_rpqav"]
+[ext_resource type="Texture2D" uid="uid://ck76h2a511ev" path="res://Assets/placehold-item.png" id="2_1iu4k"]
 [ext_resource type="Texture2D" uid="uid://bjj7tk4nyjivp" path="res://Assets/Character/attacks/punch_1.png" id="4_i2e8t"]
 [ext_resource type="Texture2D" uid="uid://b1oyqkasw31ox" path="res://Assets/Character/attacks/punch_2.png" id="5_qidb7"]
 [ext_resource type="Texture2D" uid="uid://dxcjk7obbn2vw" path="res://Assets/Character/attacks/punch_3.png" id="6_70hv0"]
@@ -745,11 +746,17 @@ zoom = Vector2(2, 2)
 process_callback = 0
 position_smoothing_enabled = true
 
+[node name="cameraDEBUG" type="Sprite2D" parent="CameraTarget" unique_id=715800059]
+visible = false
+scale = Vector2(0.375, 0.375)
+texture = ExtResource("2_1iu4k")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=887800869]
 position = Vector2(0, -24)
 sprite_frames = SubResource("SpriteFrames_o6h5a")
-animation = &"attack_1"
+animation = &"idle"
 autoplay = "idle"
+frame_progress = 0.60406965
 
 [node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=532643010]
 position = Vector2(0, -16)
@@ -762,27 +769,30 @@ position = Vector2(0, -15.5)
 shape = SubResource("RectangleShape2D_o6h5a")
 debug_color = Color(0.9607843, 0, 0, 0.25882354)
 
-[node name="DashTimer" type="Timer" parent="." unique_id=1389017172]
+[node name="Timer" type="Node" parent="." unique_id=938040361]
+
+[node name="DashTimer" type="Timer" parent="Timer" unique_id=1389017172]
 wait_time = 0.2
 one_shot = true
 
-[node name="DashCooldown" type="Timer" parent="." unique_id=1770789365]
+[node name="DashCooldown" type="Timer" parent="Timer" unique_id=1770789365]
 wait_time = 0.2
 one_shot = true
 
-[node name="WallJumpTimer" type="Timer" parent="." unique_id=678115197]
+[node name="WallJumpTimer" type="Timer" parent="Timer" unique_id=678115197]
 wait_time = 0.2
 
-[node name="AttackCooldown" type="Timer" parent="." unique_id=453716976]
-wait_time = 0.4
-one_shot = true
-
-[node name="ComboTimer" type="Timer" parent="." unique_id=1628366058]
+[node name="ComboTimer" type="Timer" parent="Timer" unique_id=1628366058]
 wait_time = 0.6
 one_shot = true
 
-[connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
-[connection signal="timeout" from="DashCooldown" to="." method="_on_dash_cooldown_timeout"]
-[connection signal="timeout" from="WallJumpTimer" to="." method="_on_wall_jump_timer_timeout"]
-[connection signal="timeout" from="AttackCooldown" to="." method="_on_attack_cooldown_timeout"]
-[connection signal="timeout" from="ComboTimer" to="." method="_on_combo_timer_timeout"]
+[node name="AttackCooldown" type="Timer" parent="Timer" unique_id=453716976]
+wait_time = 0.4
+one_shot = true
+
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
+[connection signal="timeout" from="Timer/DashTimer" to="." method="_on_dash_timer_timeout"]
+[connection signal="timeout" from="Timer/DashCooldown" to="." method="_on_dash_cooldown_timeout"]
+[connection signal="timeout" from="Timer/WallJumpTimer" to="." method="_on_wall_jump_timer_timeout"]
+[connection signal="timeout" from="Timer/ComboTimer" to="." method="_on_combo_timer_timeout"]
+[connection signal="timeout" from="Timer/AttackCooldown" to="." method="_on_attack_cooldown_timeout"]
