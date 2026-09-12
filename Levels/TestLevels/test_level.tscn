@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://cuux7gynxvhly"]
 
-[ext_resource type="Texture2D" uid="uid://cgm6yf18iggv0" path="res://Assets/placehold-block.png" id="1_7j2ip"]
-[ext_resource type="Texture2D" uid="uid://ck76h2a511ev" path="res://Assets/placehold-item.png" id="3_7j2ip"]
+[ext_resource type="Texture2D" uid="uid://b6erhhx6f3qtg" path="res://Assets/devTextures/placehold-block.png" id="1_7j2ip"]
+[ext_resource type="Texture2D" uid="uid://ck76h2a511ev" path="res://Assets/devTextures/placehold-item.png" id="3_7j2ip"]
 [ext_resource type="PackedScene" uid="uid://dajiel50457g" path="res://Scenes/level_loader.tscn" id="3_o47u0"]
 [ext_resource type="Script" uid="uid://ci384g5gffl7b" path="res://Scripts/test_ability_pickup.gd" id="4_abx52"]
 

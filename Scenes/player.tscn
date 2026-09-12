@@ -1,8 +1,8 @@
-[gd_scene format=3 uid="uid://7sn8lkbahrpl"]
+[gd_scene format=3 uid="uid://d2h5ulhbcjwej"]
 
 [ext_resource type="Script" uid="uid://bgnjp1yw3vv1e" path="res://Scripts/player.gd" id="1_m0x7a"]
 [ext_resource type="Texture2D" uid="uid://vpv8f0sxgiwq" path="res://Assets/Character/idle/idle.png" id="1_rpqav"]
-[ext_resource type="Texture2D" uid="uid://ck76h2a511ev" path="res://Assets/placehold-item.png" id="2_1iu4k"]
+[ext_resource type="Texture2D" uid="uid://ck76h2a511ev" path="res://Assets/devTextures/placehold-item.png" id="2_1iu4k"]
 [ext_resource type="Texture2D" uid="uid://bjj7tk4nyjivp" path="res://Assets/Character/attacks/punch_1.png" id="4_i2e8t"]
 [ext_resource type="Texture2D" uid="uid://b1oyqkasw31ox" path="res://Assets/Character/attacks/punch_2.png" id="5_qidb7"]
 [ext_resource type="Texture2D" uid="uid://dxcjk7obbn2vw" path="res://Assets/Character/attacks/punch_3.png" id="6_70hv0"]
