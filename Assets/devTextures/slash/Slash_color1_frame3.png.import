@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cn4d7snqg8c6d"
-path="res://.godot/imported/placehold-block.png-61a4e750c52f317475a1f2c9989f96f4.ctex"
+uid="uid://cp2x41ad6ycpt"
+path="res://.godot/imported/Slash_color1_frame3.png-88dc389b5ad8eb177f8be7f32a30ded0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/devTextures/placehold-block.png"
-dest_files=["res://.godot/imported/placehold-block.png-61a4e750c52f317475a1f2c9989f96f4.ctex"]
+source_file="res://Assets/devTextures/slash/Slash_color1_frame3.png"
+dest_files=["res://.godot/imported/Slash_color1_frame3.png-88dc389b5ad8eb177f8be7f32a30ded0.ctex"]
 
 [params]
 

@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://cuux7gynxvhly"]
 
-[ext_resource type="Texture2D" uid="uid://b6erhhx6f3qtg" path="res://Assets/devTextures/placehold-block.png" id="1_7j2ip"]
+[ext_resource type="Texture2D" uid="uid://cn4d7snqg8c6d" path="res://Assets/devTextures/placehold-block.png" id="1_7j2ip"]
 [ext_resource type="Texture2D" uid="uid://ck76h2a511ev" path="res://Assets/devTextures/placehold-item.png" id="3_7j2ip"]
 [ext_resource type="PackedScene" uid="uid://dajiel50457g" path="res://Scenes/level_loader.tscn" id="3_o47u0"]
 [ext_resource type="Script" uid="uid://ci384g5gffl7b" path="res://Scripts/test_ability_pickup.gd" id="4_abx52"]
@@ -21,6 +21,9 @@ distance = -233.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_o6h5a"]
 font_size = 9
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q0a0x"]
+radius = 9.0
 
 [node name="TestLevel" type="Node2D" unique_id=615977672]
 
@@ -50,6 +53,16 @@ offset_right = 24.0
 offset_bottom = -15.0
 text = "All Abilities"
 label_settings = SubResource("LabelSettings_o6h5a")
+
+[node name="hitTest" type="Area2D" parent="." unique_id=1133704118]
+position = Vector2(225.00002, -33)
+scale = Vector2(1.0000001, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitTest" unique_id=346383389]
+shape = SubResource("CircleShape2D_q0a0x")
+
+[node name="Sprite2D" type="Sprite2D" parent="hitTest" unique_id=1694679899]
+texture = ExtResource("3_7j2ip")
 
 [node name="LevelLoader" parent="." unique_id=693390060 instance=ExtResource("3_o47u0")]
 position = Vector2(-9, -24)
