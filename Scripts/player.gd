@@ -44,93 +44,113 @@ const CAMERA_OFFSET_Y = -16
 
 
 func _physics_process(delta: float) -> void:
-	# detects dash
-	if Input.is_action_just_pressed("dash") and PlayerAbilities.has_dash and not is_dash_on_cooldown:
-		is_dashing = true
-		is_dash_on_cooldown = true
-		dash_timer.start()
+	_handle_dash_input()
 	
 	if is_dashing:
-		velocity.y = 0
-		if look_direction > 0:
-			velocity.x = DASH_SPEED
-		else:
-			velocity.x = -DASH_SPEED
-		_update_movement_state()
-		_update_animation()
-		move_and_slide()
-		return
+		_apply_dash_movement()
 	else:
-		# apply gravity
-		if not is_on_floor():
-			velocity += get_gravity() * delta
-		
-		# moves horizontaly
-		if not movement_disabled:
-			var direction := Input.get_axis("left", "right")
-			velocity.x = direction * SPEED
-		
-		# wall slide: clamp fall speed while pressed against a wall in the air
-		is_wall_sliding = is_on_wall_only() and not is_on_floor() and velocity.y > 0 and PlayerAbilities.has_wall_jump
-		if is_wall_sliding:
-			# -1 = wall on right, 1 = wall on left
-			var wall_side = sign(get_wall_normal().x)
-			velocity.y = min(velocity.y, WALL_SLIDE_SPEED)
-			velocity.x += -wall_side
-		
-		if velocity.y >= 0 or is_on_floor():
-			is_jumping = false
-		
-		# jumps
-		if Input.is_action_just_pressed("jump"):
-			if is_on_floor():
-				velocity.y = JUMP_VELOCITY
-				is_jumping = true
-			elif is_wall_sliding:
-				# -1 = wall on right, 1 = wall on left
-				var wall_side = sign(get_wall_normal().x)
-				velocity.y = JUMP_VELOCITY
-				velocity.x = wall_side * SPEED
-				is_jumping = true
-				
-				movement_disabled = true
-				wall_jump_timer.start()
-			elif is_double_jump_avalible and PlayerAbilities.has_double_jump:
-				velocity.y = JUMP_VELOCITY
-				is_jumping = true
-				is_double_jump_avalible = false
-				
-		
-		# jump release
-		if Input.is_action_just_released("jump") and is_jumping:
-			velocity.y = 0
-			is_jumping = false
-		
-		# attack
-		if Input.is_action_just_pressed("attack") and not is_wall_sliding and not is_attack_on_cooldown and combo_state < 3:
-			action_state = ActionState.ATTACK
-			#is_attack_on_cooldown = true
-			#combo_state += 1
-			#attack_cooldown.start()
-			#combo_timer.start()
-			_slash()
+		_apply_gravity(delta)
+		_handle_movement_input()
+		_handle_wall_slide()
+		_handle_jump_input()
+		_handle_attack_input()
 	
-	if is_dash_on_cooldown and (is_on_floor() or is_wall_sliding) and dash_cooldown.is_stopped():
-		dash_cooldown.start()
-	
-	if not is_double_jump_avalible and (is_on_floor() or is_wall_sliding):
-		is_double_jump_avalible = true
+	_handle_cooldown_resets()
 	
 	if action_state == ActionState.ATTACK:
-		for area in attack_box.get_overlapping_areas():
-			if area.name == "hitTest":
-				area.queue_free()
+		_handle_attack_hit()
 	
 	_update_data()
 	_update_camera()
 	_update_movement_state()
 	_update_animation()
 	move_and_slide()
+
+
+func _handle_dash_input() -> void:
+	# detects dash
+	if Input.is_action_just_pressed("dash") and PlayerAbilities.has_dash and not is_dash_on_cooldown:
+		is_dashing = true
+		is_dash_on_cooldown = true
+		dash_timer.start()
+
+func _apply_dash_movement() -> void:
+	velocity.y = 0
+	if look_direction > 0:
+		velocity.x = DASH_SPEED
+	else:
+		velocity.x = -DASH_SPEED
+
+func _apply_gravity(delta: float) -> void:
+	# apply gravity
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+
+func _handle_movement_input() -> void:
+	# moves horizontaly
+	if not movement_disabled:
+		var direction := Input.get_axis("left", "right")
+		velocity.x = direction * SPEED
+
+func _handle_wall_slide() -> void:
+	# wall slide: clamp fall speed while pressed against a wall in the air
+	is_wall_sliding = is_on_wall_only() and not is_on_floor() and velocity.y > 0 and PlayerAbilities.has_wall_jump
+	if is_wall_sliding:
+		# -1 = wall on right, 1 = wall on left
+		var wall_side = sign(get_wall_normal().x)
+		velocity.y = min(velocity.y, WALL_SLIDE_SPEED)
+		velocity.x += -wall_side
+
+func _handle_jump_input() -> void:
+	if velocity.y >= 0 or is_on_floor():
+		is_jumping = false
+	
+	# jumps
+	if Input.is_action_just_pressed("jump"):
+		if is_on_floor():
+			velocity.y = JUMP_VELOCITY
+			is_jumping = true
+		elif is_wall_sliding:
+			# -1 = wall on right, 1 = wall on left
+			var wall_side = sign(get_wall_normal().x)
+			velocity.y = JUMP_VELOCITY
+			velocity.x = wall_side * SPEED
+			is_jumping = true
+			
+			movement_disabled = true
+			wall_jump_timer.start()
+		elif is_double_jump_avalible and PlayerAbilities.has_double_jump:
+			velocity.y = JUMP_VELOCITY
+			is_jumping = true
+			is_double_jump_avalible = false
+			
+	
+	# jump release
+	if Input.is_action_just_released("jump") and is_jumping:
+		velocity.y = 0
+		is_jumping = false
+
+func _handle_attack_input() -> void:
+	# attack
+	if Input.is_action_just_pressed("attack") and not is_wall_sliding and not is_attack_on_cooldown and combo_state < 3:
+		action_state = ActionState.ATTACK
+		#is_attack_on_cooldown = true
+		#combo_state += 1
+		#attack_cooldown.start()
+		#combo_timer.start()
+		_slash()
+
+func _handle_cooldown_resets() -> void:
+	if is_dash_on_cooldown and (is_on_floor() or is_wall_sliding) and dash_cooldown.is_stopped():
+		dash_cooldown.start()
+	
+	if not is_double_jump_avalible and (is_on_floor() or is_wall_sliding):
+		is_double_jump_avalible = true
+
+func _handle_attack_hit() -> void:
+	for area in attack_box.get_overlapping_areas():
+		if area.name == "hitTest":
+			area.queue_free()
 
 func _update_data() -> void:
 	if is_wall_sliding:
