@@ -18,7 +18,7 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 	
 	if state == STATE.IDLE:
-		anim_sprite.play("idel")
+		anim_sprite.play("idle")
 	elif state == STATE.HURT:
 		anim_sprite.play("hurt")
 	

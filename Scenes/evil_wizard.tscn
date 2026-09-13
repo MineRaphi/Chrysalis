@@ -97,7 +97,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_yt36m")
 }],
 "loop": 1,
-"name": &"idel",
+"name": &"idle",
 "speed": 10.0
 }]
 
@@ -118,8 +118,8 @@ script = ExtResource("1_if2hl")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=362716997]
 position = Vector2(0, -25)
 sprite_frames = SubResource("SpriteFrames_o6h5a")
-animation = &"idel"
-autoplay = "idel"
+animation = &"idle"
+autoplay = "idle"
 
 [node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=1389405512]
 position = Vector2(0, -22)
