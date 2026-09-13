@@ -2,6 +2,23 @@
 
 [ext_resource type="Texture2D" uid="uid://dvg8dhdtsjgl5" path="res://Assets/Evil Wizard/Idle.png" id="1_1vlj1"]
 [ext_resource type="Script" uid="uid://xngoopqp4bd1" path="res://Scripts/evil_wizard.gd" id="1_if2hl"]
+[ext_resource type="Texture2D" uid="uid://bk1vpcsuwy572" path="res://Assets/Evil Wizard/Take Hit.png" id="2_g2y0y"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2t8t7"]
+atlas = ExtResource("2_g2y0y")
+region = Rect2(0, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_swkbo"]
+atlas = ExtResource("2_g2y0y")
+region = Rect2(150, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u0hd4"]
+atlas = ExtResource("2_g2y0y")
+region = Rect2(300, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qbabc"]
+atlas = ExtResource("2_g2y0y")
+region = Rect2(450, 0, 150, 150)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_if2hl"]
 atlas = ExtResource("1_1vlj1")
@@ -39,6 +56,23 @@ region = Rect2(1050, 0, 150, 150)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_2t8t7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_swkbo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u0hd4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qbabc")
+}],
+"loop": 0,
+"name": &"hurt",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_if2hl")
 }, {
 "duration": 1.0,
@@ -73,6 +107,9 @@ height = 44.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o6h5a"]
 size = Vector2(12, 37)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q0a0x"]
+size = Vector2(14, 35)
+
 [node name="EvilWizard" type="CharacterBody2D" unique_id=2031468200]
 collision_layer = 2
 collision_mask = 2
@@ -83,7 +120,6 @@ position = Vector2(0, -25)
 sprite_frames = SubResource("SpriteFrames_o6h5a")
 animation = &"idel"
 autoplay = "idel"
-frame_progress = 0.76067865
 
 [node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=1389405512]
 position = Vector2(0, -22)
@@ -95,3 +131,10 @@ shape = SubResource("CapsuleShape2D_o6h5a")
 position = Vector2(0, -21.5)
 shape = SubResource("RectangleShape2D_o6h5a")
 debug_color = Color(0.9607843, 0, 0, 0.25882354)
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=524595852]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1453587588]
+position = Vector2(0, -21.5)
+shape = SubResource("RectangleShape2D_q0a0x")
+debug_color = Color(0.29493183, 0.62943524, 7.70092e-07, 0.41960785)
