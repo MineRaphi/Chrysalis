@@ -34,6 +34,7 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACAAAAAAAAAAA
 tile_set = SubResource("TileSet_q0a0x")
 
 [node name="deathzone" type="Area2D" parent="." unique_id=1527798157]
+position = Vector2(0, 753)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="deathzone" unique_id=627796691]
 shape = SubResource("WorldBoundaryShape2D_dtjkg")
