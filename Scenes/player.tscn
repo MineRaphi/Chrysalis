@@ -814,6 +814,7 @@ one_shot = true
 
 [node name="WallJumpTimer" type="Timer" parent="Timer" unique_id=678115197]
 wait_time = 0.2
+one_shot = true
 
 [node name="ComboTimer" type="Timer" parent="Timer" unique_id=1628366058]
 wait_time = 0.6
@@ -822,6 +823,10 @@ one_shot = true
 [node name="AttackCooldown" type="Timer" parent="Timer" unique_id=453716976]
 wait_time = 0.4
 one_shot = true
+
+[node name="Save_Ground_Pos" type="Timer" parent="Timer" unique_id=1181259635]
+wait_time = 0.5
+autostart = true
 
 [node name="AttackBox" type="Area2D" parent="." unique_id=906058733]
 position = Vector2(0, -20)
@@ -837,3 +842,4 @@ polygon = PackedVector2Array(1, 0, 21, -7, 36, -17, 34, -26, 19, -34, -2, -37, 5
 [connection signal="timeout" from="Timer/WallJumpTimer" to="." method="_on_wall_jump_timer_timeout"]
 [connection signal="timeout" from="Timer/ComboTimer" to="." method="_on_combo_timer_timeout"]
 [connection signal="timeout" from="Timer/AttackCooldown" to="." method="_on_attack_cooldown_timeout"]
+[connection signal="timeout" from="Timer/Save_Ground_Pos" to="." method="_on_save_ground_pos_timeout"]

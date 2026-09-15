@@ -17,6 +17,7 @@ var combo_state := 0
 var look_direction := 1
 var look_updown := 0
 var camera_distance := Vector2(0, 0)
+var last_save_ground_pos := Vector2(0, 0)
 
 var already_hit_this_attack: Array = []
 
@@ -69,7 +70,6 @@ func _physics_process(delta: float) -> void:
 	_update_movement_state()
 	_update_animation()
 	move_and_slide()
-
 
 func _handle_dash_input() -> void:
 	# detects dash
@@ -242,8 +242,9 @@ func _on_dash_cooldown_timeout() -> void:
 func _on_wall_jump_timer_timeout() -> void:
 	movement_disabled = false
 
-func _kill_player():
-	get_tree().reload_current_scene()
+func _hazard_respawn():
+	position = last_save_ground_pos
+	snap_camera_to_target()
 
 func _on_attack_cooldown_timeout() -> void:
 	is_attack_on_cooldown = false
@@ -252,12 +253,16 @@ func _on_attack_cooldown_timeout() -> void:
 func _on_combo_timer_timeout() -> void:
 	combo_state = 0
 
+func _on_save_ground_pos_timeout() -> void:
+	if is_on_floor():
+		last_save_ground_pos = position
+
 func snap_camera_to_target():
 	camera.reset_smoothing()
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
 	if area.name == "deathzone":
-		call_deferred("_kill_player")
+		call_deferred("_hazard_respawn")
 
 func _slash() -> void:
 	slash.visible = true
