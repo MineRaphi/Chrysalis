@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-enum MovementState { IDLE, RUN, JUMP, FALL, DASH, WALL }
+enum MovementState { IDLE, RUN, JUMP, FALL, DASH, WALL, SPRINT }
 enum ActionState { NONE, ATTACK, HURT }
 
 var movement_state: MovementState = MovementState.IDLE
@@ -24,7 +24,7 @@ var already_hit_this_attack: Array = []
 
 const SPEED = 240.0
 const DASH_SPEED = 600.0
-const SPRINT_SPEED = 420.0
+const SPRINT_SPEED = 320.0
 const WALL_SLIDE_SPEED = 200.0
 const JUMP_VELOCITY = -400.0
 const POGO_VELOCITY = -275.0
@@ -59,6 +59,7 @@ func _physics_process(delta: float) -> void:
 		_apply_dash_movement()
 	else:
 		_apply_gravity(delta)
+		_handle_sprint_input()
 		_handle_movement_input()
 		_handle_wall_slide()
 		_handle_jump_input()
@@ -74,7 +75,7 @@ func _physics_process(delta: float) -> void:
 	_update_movement_state()
 	_update_animation()
 	move_and_slide()
-	
+
 
 func _handle_dash_input() -> void:
 	# detects dash
@@ -82,6 +83,12 @@ func _handle_dash_input() -> void:
 		is_dashing = true
 		is_dash_on_cooldown = true
 		dash_timer.start()
+
+func _handle_sprint_input() -> void:
+	if Input.is_action_pressed("dash") and not is_dashing and PlayerAbilities.has_dash:
+		movement_state = MovementState.SPRINT
+	if Input.is_action_just_released("dash"):
+		movement_state = MovementState.RUN
 
 func _apply_dash_movement() -> void:
 	velocity.y = 0
@@ -99,7 +106,10 @@ func _handle_movement_input() -> void:
 	# moves horizontaly
 	if not movement_disabled:
 		var direction := Input.get_axis("left", "right")
-		velocity.x = direction * SPEED
+		if movement_state == MovementState.SPRINT:
+			velocity.x = direction * SPRINT_SPEED
+		else:
+			velocity.x = direction * SPEED
 
 func _handle_wall_slide() -> void:
 	# wall slide: clamp fall speed while pressed against a wall in the air
@@ -190,6 +200,8 @@ func _update_movement_state() -> void:
 		else:
 			movement_state = MovementState.FALL
 	elif abs(velocity.x) > 0.1:
+		if movement_state == MovementState.SPRINT:
+			return
 		movement_state = MovementState.RUN
 	else:
 		movement_state = MovementState.IDLE
@@ -221,6 +233,8 @@ func _update_animation() -> void:
 			anim_sprite.play("dash")
 		MovementState.WALL:
 			anim_sprite.play("wall_slide")
+		MovementState.SPRINT:
+			anim_sprite.play("sprint")
 
 func _update_camera() -> void:
 	camera_distance.x = abs(velocity.x / 3)
@@ -271,7 +285,6 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 	
 	if area.name == "Save":
 		get_node("/root/Main").save_game()
-
 
 func _slash() -> void:
 	slash.visible = true
