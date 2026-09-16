@@ -48,16 +48,15 @@ text = "Start Game"
 layout_mode = 2
 text = "Load Save"
 
-[node name="Label" type="Label" parent="mainMenu/menuButtons" unique_id=2002456971]
-layout_mode = 1
+[node name="Label" type="Label" parent="mainMenu" unique_id=2002456971]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -92.0
+offset_left = -94.0
 offset_top = -154.0
-offset_right = 92.0
+offset_right = 90.0
 offset_bottom = -53.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -66,6 +65,14 @@ V - Jump
 X - Attack
 Y - Dash"
 horizontal_alignment = 1
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=560346944]
+
+[node name="health" type="HBoxContainer" parent="HUD" unique_id=1922758377]
+anchors_preset = -1
+anchor_right = 0.034722224
+anchor_bottom = 0.061728396
+metadata/_edit_use_anchors_ = true
 
 [connection signal="pressed" from="mainMenu/menuButtons/VBoxContainer/startButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="mainMenu/menuButtons/VBoxContainer/loadButton" to="." method="_on_load_button_pressed"]
