@@ -6,6 +6,7 @@ enum ActionState { NONE, ATTACK, HURT }
 var movement_state: MovementState = MovementState.IDLE
 var action_state: ActionState = ActionState.NONE
 
+var disable_player := false
 var is_jumping := false
 var is_dashing := false
 var is_dash_on_cooldown := false
@@ -49,6 +50,9 @@ const CAMERA_OFFSET_Y = -16
 
 
 func _physics_process(delta: float) -> void:
+	if disable_player:
+		return
+	
 	_handle_dash_input()
 	
 	if is_dashing:
@@ -70,6 +74,7 @@ func _physics_process(delta: float) -> void:
 	_update_movement_state()
 	_update_animation()
 	move_and_slide()
+	
 
 func _handle_dash_input() -> void:
 	# detects dash
@@ -263,6 +268,10 @@ func snap_camera_to_target():
 func _on_hurtbox_area_entered(area: Area2D) -> void:
 	if area.name == "deathzone":
 		call_deferred("_hazard_respawn")
+	
+	if area.name == "Save":
+		get_node("/root/Main").save_game()
+
 
 func _slash() -> void:
 	slash.visible = true
@@ -297,3 +306,11 @@ func _slash() -> void:
 	await slash.animation_finished
 	slash.visible = false
 	action_state = ActionState.NONE
+
+func disable() -> void:
+	disable_player = true
+	hide()
+
+func enable() -> void:
+	disable_player = false
+	show()

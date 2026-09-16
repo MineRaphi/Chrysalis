@@ -9,3 +9,63 @@ script = ExtResource("1_idj7w")
 [node name="currentRoom" type="Node2D" parent="." unique_id=801395696]
 
 [node name="Player" parent="." unique_id=923916503 instance=ExtResource("1_r150o")]
+
+[node name="mainMenu" type="CanvasLayer" parent="." unique_id=1486343146]
+
+[node name="menuButtons" type="Control" parent="mainMenu" unique_id=565127666]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -22.0
+offset_top = -20.0
+offset_right = 18.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="mainMenu/menuButtons" unique_id=867326102]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -20.0
+offset_right = 48.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="startButton" type="Button" parent="mainMenu/menuButtons/VBoxContainer" unique_id=1429873171]
+layout_mode = 2
+text = "Start Game"
+
+[node name="loadButton" type="Button" parent="mainMenu/menuButtons/VBoxContainer" unique_id=1398413864]
+layout_mode = 2
+text = "Load Save"
+
+[node name="Label" type="Label" parent="mainMenu/menuButtons" unique_id=2002456971]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -92.0
+offset_top = -154.0
+offset_right = 92.0
+offset_bottom = -53.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Arrow keys - movement
+V - Jump
+X - Attack
+Y - Dash"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="mainMenu/menuButtons/VBoxContainer/startButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="mainMenu/menuButtons/VBoxContainer/loadButton" to="." method="_on_load_button_pressed"]
